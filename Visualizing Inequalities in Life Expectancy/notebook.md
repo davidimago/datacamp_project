@@ -41,42 +41,6 @@ head(life_expectancy)
 
 
 
-```R
-# These packages need to be loaded in the first `@tests` cell. 
-library(testthat) 
-library(IRkernel.testthat)
-
-# Then follows one or more tests of the students code. 
-# The @solution should pass the tests.
-# The purpose of the tests is to try to catch common errors and to 
-# give the student a hint on how to resolve these errors.
-
-run_tests({
-  test_that("Test that life_expectancy exists", {
-    expect_true(exists("life_expectancy"), 
-                 info = "It seems that the data frame life_expectancy does not exist.")
-  })
-
-  test_that("Test that life_expectancy is loaded correctly", {
-    expect_true(nrow(life_expectancy)==1571, 
-                 info = "The data frame life_expectancy is not correctly loaded.")
-  })
-
-  test_that("Test that life_expectancy is loaded correctly", {
-    expect_true(ncol(life_expectancy)==7, 
-                 info = "The data frame life_expectancy is not correctly loaded.")
-  })
-})
-```
-
-
-
-
-
-
-    3/3 tests passed
-
-
 ## 2. Life expectancy of men vs. women by country
 <p>Let's manipulate the data to make our exploration easier. We will build the dataset for our first plot in which we will represent the average life expectancy of men and women across countries for the last period recorded in our data (2000-2005).</p>
 
@@ -114,42 +78,6 @@ head(subdata)
 
 
 
-```R
-# one or more tests of the students code. 
-# The @solution should pass the tests.
-# The purpose of the tests is to try to catch common errors and to 
-# give the student a hint on how to resolve these errors.
-run_tests({
-  test_that("Test that subdata exists", {
-    expect_true(exists("subdata"), 
-                 info = "It seems that dataset subdata does not exist.")
-  })
-
-  test_that("Test that subdata is created correctly", {
-    expect_true(nrow(subdata)==195, 
-                 info = "It seems that subdata is not correctly created.")
-  })
-
-  test_that("Test that subdata is created correctly", {
-    expect_true(ncol(subdata)==3, 
-                 info = "It seems that subdata is not correctly created.")
-  })
-
-  test_that("Test that subdata is contains correct columns", {
-    expect_true(sum(is.element(c("Country.or.Area", "Female", "Male"), names(subdata)))==3, 
-                 info = "It seems that subdata does not contain the correct columns.")
-  })
-})
-```
-
-
-
-
-
-
-    4/4 tests passed
-
-
 ## 3. Visualize I
 <p>A scatter plot is a useful way to visualize the relationship between two variables. It is a simple plot in which points are arranged on two axes, each of which represents one of those variables. </p>
 <p>Let's create a scatter plot using <code>ggplot2</code> to represent life expectancy of males (on the x-axis) against females (on the y-axis). We will create a straightforward plot in this task, without many details. We will take care of these kinds of things shortly.</p>
@@ -165,28 +93,6 @@ ggplot(subdata, aes(Male, Female)) +
 ![png](output_7_0.png)
 
 
-
-```R
-run_tests({
-  test_that("Check that a geom_point plot was plotted.", {
-    expect_true( "GeomPoint" %in% class( last_plot()$layers[[1]]$geom ) , 
-                 info = "Add geom_point() to produce a scatter plot.")
-  })
-  
-  test_that("Check variables are correctly mapped.", {
-    expect_true(deparse(last_plot()$mapping$x)=="~Male" & deparse(last_plot()$mapping$y) == "~Female",
-                 info = "Check that the variables are mapped to the correct axes.")
-  })
-  
-})
-```
-
-
-
-
-
-
-    2/2 tests passed
 
 
 ## 4. Reference lines I
@@ -207,41 +113,6 @@ ggplot(subdata, aes(Male, Female))+
 ![png](output_10_0.png)
 
 
-
-```R
-for (i in 1:length(ggplot_build(last_plot())$data)) 
-{
-  if ("slope" %in% colnames(ggplot_build(last_plot())$data[[i]])) i1=i
-}
-
-
-run_tests({
-    test_that("Intercept of diagonal line is equal to 0.", {
-    expect_equal(ggplot_build(last_plot())$data[[i1]]$intercept, 0, 
-        info = "Did you add the diagonal line correctly?")
-    })
-    test_that("Slope of diagonal line is equal to 1.", {
-    expect_equal(ggplot_build(last_plot())$data[[i1]]$slope, 1, 
-        info = "Did you add the diagonal line correctly?")
-    })
-    test_that("Limits of x-axis.", {
-        expect_equal(length(setdiff(c(39, 79), ggplot_build(last_plot())$layout$panel_scales_x[[1]]$range$range)), 0, 
-               info = "The limits of x-axis is not equal to [35, 85].")
-})
-    test_that("Limits of y-axis.", {
-        expect_equal(length(setdiff(c(39, 85), ggplot_build(last_plot())$layout$panel_scales_y[[1]]$range$range)), 0, 
-               info = "The limits of y-axis is not equal to [35, 85].")
-    })
-
-})
-```
-
-
-
-
-
-
-    4/4 tests passed
 
 
 ## 5. Plot titles and axis labels
@@ -266,41 +137,6 @@ ggplot(subdata, aes(Male, Female))+
 ![png](output_13_0.png)
 
 
-
-```R
-run_tests({
-    test_that("Title is correct.", {
-    expect_equal(toupper(gsub("[[:space:]]", "", last_plot()$labels$title)), "LIFEEXPECTANCYATBIRTHBYCOUNTRY", 
-        info = "Did you add the title correctly?")
-    })
-
-        test_that("x-axis label is correct.", {
-    expect_equal(toupper(gsub("[[:space:]]", "", last_plot()$labels$x)), "MALES", 
-        info = "Did you set the x-axis label correctly?")
-    })
-
-    
-        test_that("y-axis label is correct.", {
-    expect_equal(toupper(gsub("[[:space:]]", "", last_plot()$labels$y)), "FEMALES", 
-        info = "Did you set the y-axis label correctly?")
-    })
-
-          test_that("caption is correct.", {
-    expect_equal(toupper(gsub("[[:space:]]", "", last_plot()$labels$caption)), "SOURCE:UNITEDNATIONSSTATISTICSDIVISION", 
-        info = "Did you set the caption correctly?")
-    })
-
-    
-    
-})
-```
-
-
-
-
-
-
-    4/4 tests passed
 
 
 ## 6. Highlighting remarkable countries I
@@ -332,34 +168,6 @@ ggplot(subdata, aes(Male, Female, label = Country.or.Area))+
 ![png](output_16_0.png)
 
 
-
-```R
-texts=c()
-for (i in 1:length(last_plot()$layers)) texts=c(last_plot()$layers[[i]]$data$Country.or.Area %>% as.character, texts)
-
-
-run_tests({
-   
-      test_that("Test that countries defined by top_female and top_male are correctly labeled.", {
-    expect_true(length(setdiff(texts, c("Russian Federation", "Belarus", "Estonia", "Niger", "Afghanistan", "Maldives")))==0, 
-                 info = "It seems that countries defined by top_female and top_male are not labeled correctly.")
-  })
-    
-        test_that("Theme is theme_bw().", {
-    expect_equal(last_plot()$theme$panel.background$fill, "white", 
-        info = "It seems that your plot does not have theme_bw().")
-    })
-
-
-})
-```
-
-
-
-
-
-
-    2/2 tests passed
 
 
 ## 7. How has life expectancy by gender evolved?
@@ -402,44 +210,6 @@ head(subdata2)
 
 
 
-```R
-
-run_tests({
-  test_that("Test that subdata2 is created correctly.", {
-    expect_true(nrow(subdata2)==195, 
-                 info = "It seems that dataset subdata2 is not correctly created.")
-  })
-
-  test_that("Test that subdata2 is created correctly.", {
-    expect_true(ncol(subdata2)==10, 
-                 info = "It seems that dataset subdata2 is not correctly created.")
-  })
-
-  test_that("Test that subdata2 is created correctly.", {
-    expect_true(length(setdiff(c('diff_Female', 'diff_Male'), names(subdata2)))==0, 
-                 info = "It seems that subdata2 does not contain columns diff_Female or diff_Male.")
-  })
-
-    test_that("Test that subdata2 is created correctly.", {
-    expect_true(sum(subdata2$diff_Female)==492, 
-                 info = "It seems that the diff_Female column is not correctly created.")
-  })  
-    
-  test_that("Test that subdata2 is created correctly.", {
-    expect_true(sum(subdata2$diff_Male)==503, 
-                 info = "It seems that the diff_Male column is not correctly created.")
-  })
-})
-```
-
-
-
-
-
-
-    5/5 tests passed
-
-
 ## 8. Visualize II
 <p>Now let's create our second plot in which we will represent average life expectancy differences between "1985-1990" and "2000-2005" for men and women.</p>
 
@@ -463,55 +233,6 @@ theme_bw()
 ![png](output_22_0.png)
 
 
-
-```R
-run_tests({
-    
-#    test_that("Check that a geom_point plot was plotted.", {
-#     expect_true( "GeomPoint" %in% class( last_plot()$layers[[1]]$geom ) , 
-#                  info = "Add geom_point() to produce a scatter plot.")
-#   })
-  
-  test_that("Check variables are correctly mapped.", {
-    expect_true( deparse(last_plot()$mapping$x)=="~diff_Male" & deparse(last_plot()$mapping$y)=="~diff_Female", 
-                 info = "Check that the variables are mapped to the correct axes.")
-  })
-  
-    
-#     test_that("Intercept of diagonal line is equal to 0.", {
-#     expect_equal(ggplot_build(last_plot())$data[[2]]$intercept, 0, 
-#         info = "Did you add the diagonal line correctly?")
-#     })
-#     test_that("Slope of diagonal line is equal to 1.", {
-#     expect_equal(ggplot_build(last_plot())$data[[2]]$slope, 1, 
-#         info = "Did you add the diagonal line correctly?")
-#     })
-    test_that("Limits of x-axis", {
-        expect_equal(length(setdiff(c(-20, 15), ggplot_build(last_plot())$layout$panel_scales_x[[1]]$range$range)), 0, 
-               info = "Limits of x-axis is not equal to [-25, 25].")
-    })
-    test_that("Limits of y-axis", {
-        expect_equal(length(setdiff(c(-24, 15), ggplot_build(last_plot())$layout$panel_scales_y[[1]]$range$range)), 0, 
-               info = "Limits of y-axis is not equal to [-25, 25]")
-    })
-    
-#     test_that("Intercept of diagonal line is equal to 0.", {
-#     expect_equal(toupper(gsub("[[:space:]]", "", last_plot()$labels$title)), "LIFEEXPECTANCYATBIRTHBYCOUNTRYINYEARS", 
-#         info = "Did you add the title correctly?")
-#     })
-#     test_that("Slope of diagonal line is equal to 1.", {
-#     expect_equal(last_plot()$theme$panel.background$fill, "white", 
-#         info = "It seems that your plot does not have theme_bw().")
-#     })
-})
-```
-
-
-
-
-
-
-    3/3 tests passed
 
 
 ## 9. Reference lines II
@@ -549,33 +270,6 @@ for (i in 1:length(ggplot_build(last_plot())$data))
 }
       
 
-run_tests({
-#     test_that("Intercept of diagonal line is equal to 0.", {
-#     expect_equal(ggplot_build(last_plot())$data[[i1]]$intercept, 0, 
-#         info = "Did you add the diagonal line correctly?")
-#     })
-#     test_that("Slope of diagonal line is equal to 1.", {
-#     expect_equal(ggplot_build(last_plot())$data[[i1]]$slope, 1, 
-#         info = "Did you add the diagonal line correctly?")
-#     })
-
-        test_that("Horizontal line is well defined.", {
-    expect_equal(ggplot_build(last_plot())$data[[i2]]$yintercept, 0, 
-        info = "Did you add the horizontal line correctly?")
-    })
-    test_that("Vertical line is well defined.", {
-    expect_equal(ggplot_build(last_plot())$data[[i3]]$xintercept, 0, 
-        info = "Did you add the vertical line correctly?")
-    })
-})
-```
-
-
-
-
-
-
-    2/2 tests passed
 
 
 ## 10. Highlighting remarkable countries II
@@ -608,36 +302,4 @@ ggplot(subdata2, aes(x=diff_Male, y=diff_Female, label=Country.or.Area), guide=F
 
 ![png](output_28_0.png)
 
-
-
-```R
-texts=c()
-for (i in 1:length(last_plot()$layers)) texts=c(last_plot()$layers[[i]]$data$Country.or.Area %>% as.character, texts)
-
-run_tests({
-  test_that("Test that dataset bottom exists.", {
-    expect_true(exists("bottom"), 
-                 info = "It seems that bottom does not exist.")
-  })
-
-  test_that("Test that dataset bottom is correctly created.", {
-    expect_true(nrow(bottom)==3, 
-                 info = "It seems that bottom is not correctly created.")
-  })
-
-  test_that("Test that countries defined by top and bottom are correctly labeled.", {
-    expect_true(length(setdiff(texts, c("Timor Leste", "Bhutan", "Egypt", "Zimbabwe", "Botswana", "Swaziland")))==0, 
-                 info = "It seems that countries defined by top and bottom are not labeled correctly.")
-  })
-
-
-})
-```
-
-
-
-
-
-
-    3/3 tests passed
 
