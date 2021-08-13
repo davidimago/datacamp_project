@@ -261,16 +261,6 @@ theme_bw()
 
 
 
-```R
-for (i in 1:length(ggplot_build(last_plot())$data)) 
-{
-  if ("slope"      %in% colnames(ggplot_build(last_plot())$data[[i]])) i1=i
-  if ("yintercept" %in% colnames(ggplot_build(last_plot())$data[[i]])) i2=i
-  if ("xintercept" %in% colnames(ggplot_build(last_plot())$data[[i]])) i3=i
-}      
-```
-
-
 
 ## 10. Highlighting remarkable countries II
 <p>As we did in the first plot, let's label some points. Concretely, we will point those three where the aggregated average life expectancy for men and women increased most and those three where decreased most in the period.</p>
