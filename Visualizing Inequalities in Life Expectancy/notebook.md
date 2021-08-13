@@ -267,8 +267,8 @@ for (i in 1:length(ggplot_build(last_plot())$data))
   if ("slope"      %in% colnames(ggplot_build(last_plot())$data[[i]])) i1=i
   if ("yintercept" %in% colnames(ggplot_build(last_plot())$data[[i]])) i2=i
   if ("xintercept" %in% colnames(ggplot_build(last_plot())$data[[i]])) i3=i
-}
-      
+}      
+```
 
 
 
