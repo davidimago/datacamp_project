@@ -14,10 +14,6 @@ life_expectancy <- read.csv("datasets/UNdata.csv")
 head(life_expectancy)
 
 
-# These packages need to be loaded in the first `@tests` cell. 
-library(testthat) 
-library(IRkernel.testthat)
-
 # Subsetting and reshaping the life expectancy data
 subdata <- life_expectancy  %>% 
     filter(Year == "2000-2005") %>%
